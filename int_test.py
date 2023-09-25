@@ -7,6 +7,11 @@ from scipy.fftpack import fft, fftshift, ifft
 print(gdal.__version__)
 
 def print_array_info(array, name='array'):
+    """
+    打印nparray的基本信息
+    :param array: 数组
+    :param name: 数组名称
+    """
     print('''{}.info:
       dim:{}
       shape:{}
@@ -14,6 +19,9 @@ def print_array_info(array, name='array'):
       dtype:{}'''.format(name,array.ndim, array.shape, array.size, array.dtype))
     
 def coh_map(array_a, array_b):
+    """
+    计算两个nparray数组的相干性
+    """
     size_a = np.size(array_a,0)
     size_b = np.size(array_b,0)
     size_min = min(size_a, size_b)
@@ -36,6 +44,8 @@ def coh_map(array_a, array_b):
         array_coh[i]=sum_z/np.sqrt(sum_m1)/np.sqrt(sum_m2)
         # if(array_coh[i] > 1):
         #     array_coh[i] = 1
+    
+    '''coh_stat: 统计相干性 纵轴单位是百分比'''
     coh_stat = np.zeros(100)
     for c in array_coh:
         k = int(c*100)
@@ -95,8 +105,10 @@ xcol = np.linspace(0,cols,cols)
 
 xcol_shift = xcol - np.size(xcol,0)/2
 
+'''距离向取一行'''
 sp_mas = data_mas[int(rows/2)]
 sp_sla = data_sla[int(rows/2)]
+'''方位向去取一列'''
 # sp_mas = data_mas[:,int(cols/2)].T
 # sp_sla = data_sla[:,int(cols/2)].T
 
@@ -105,15 +117,6 @@ sp_sla = data_sla[int(rows/2)]
 intf = sp_mas * np.conj(sp_sla)
 [coh,coh_stat] = coh_map(sp_mas, sp_sla)
 coh_stat_index = np.linspace(0,1,100)
-
-# coh_stat = np.zeros(100)
-# for c in coh:
-#     k = int(c*100)
-#     if k<0:
-#         k=0
-#     if k >=100:
-#         k=99
-#     coh_stat[k] = coh_stat[k] + 1
 
 print_array_info(intf,'intf')
 print(intf[0:10])
