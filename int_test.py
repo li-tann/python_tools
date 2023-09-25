@@ -47,10 +47,12 @@ def coh_map(array_a, array_b):
     coh_stat = coh_stat / np.size(array_coh,0)
     return array_coh, coh_stat  
 
-# path_mas = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\master.rslc.vrt"
-# path_sla = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\slave.rslc.vrt"
-path_mas = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\master.rslc.vrt"
-path_sla = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\slave.rslc.vrt"
+'''thinkbook'''
+path_mas = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\master.rslc.vrt"
+path_sla = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\slave.rslc.vrt"
+'''legion'''
+# path_mas = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\master.rslc.vrt"
+# path_sla = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\slave.rslc.vrt"
 gdal.UseExceptions()
 
 '''打开栅格数据'''
