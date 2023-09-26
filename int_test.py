@@ -123,6 +123,7 @@ print(intf[0:10])
 
 fft_sla = fft(sp_sla)/np.size(xcol,0)*2
 fft_mas = fft(sp_mas)/np.size(xcol,0)*2
+
 # fft_sla = np.fft.fft(sp_sla,np.size(sp_sla,0),axis=0)/sp_sla.size*2
 # fft_sla_freq =np.fft.fftfreq(np.size(sp_sla,0),1)
 # fft_mas = np.fft.fft(sp_mas,np.size(sp_mas,0),axis=0)/sp_mas.size*2
@@ -135,15 +136,15 @@ fft_mas_shift = fftshift(fft_mas)
 # print_array_info(fft_sla,'fft_sla')
 # print(max(fft_sla))
 
-
+plt.figure(1)
 # plt.plot(xcol,np.abs(sp_mas),label='sp_mas')
 # plt.plot(xcol,np.abs(sp_sla),label='sp_sla')
 
 # plt.plot(xcol,abs(fft_mas), linestyle='--',label='fft_mas')
 # plt.plot(xcol,abs(fft_sla), linestyle='-',label='fft_sla')
 
-# plt.plot(xcol_shift,np.abs(fft_mas_shift),linestyle='-',label='fft_mas_shift')
-# plt.plot(xcol_shift,np.abs(fft_sla_shift),linestyle='-',label='fft_sla_shift')
+plt.plot(xcol_shift,np.abs(fft_mas_shift),linestyle='-',label='fft_mas_shift')
+plt.plot(xcol_shift,np.abs(fft_sla_shift),linestyle='-',label='fft_sla_shift')
 
 # kaiser_win = np.kaiser(50,2.12)
 # A = fft(kaiser_win,2048)/25.5
@@ -157,10 +158,11 @@ fft_mas_shift = fftshift(fft_mas)
 # plt.figure(2)
 # plt.plot(np.linspace(0,50,50), kaiser_win)
 
+# plt.figure(3)
 # plt.plot(xcol,np.angle(intf),label = 'intf')
 # plt.plot(xcol,coh,label = 'coh')
 # plt.plot(coh_stat_index,coh_stat,label = 'coh_stat')
-plt.hist(coh,100,(0,1),label = 'coh_stat')
+# plt.hist(coh,100,(0,1),label = 'coh_stat')
 
 plt.legend()
 plt.show()
