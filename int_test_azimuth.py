@@ -1,3 +1,4 @@
+from int_test_base import print_array_info,coh_map,path_mas,path_sla
 import osgeo.gdal as gdal
 import sys
 import numpy as np
@@ -5,64 +6,6 @@ import matplotlib.pyplot as plt
 from scipy.fftpack import fft, fftshift, ifft
 
 print(gdal.__version__)
-
-def print_array_info(array, name='array'):
-    """
-    打印nparray的基本信息
-    :param array: 数组
-    :param name: 数组名称
-    """
-    print('''{}.info:
-      dim:{}
-      shape:{}
-      size:{}
-      dtype:{}'''.format(name,array.ndim, array.shape, array.size, array.dtype))
-    
-def coh_map(array_a, array_b):
-    """
-    计算两个nparray数组的相干性
-    """
-    size_a = np.size(array_a,0)
-    size_b = np.size(array_b,0)
-    size_min = min(size_a, size_b)
-    array_coh = np.zeros(size_min)
-    for i in range(size_min):
-         
-        sum_z = sum_m1 = sum_m2 = num = 0
-        for k in range(7):
-            j = k - 3
-            if(i+j<0 or i+j >= size_min):
-                continue
-            re1 = np.real(array_a[i+j])
-            im1 = np.imag(array_a[i+j])
-            re2 = np.real(array_b[i+j])
-            im2 = np.imag(array_b[i+j])              
-            sum_z += np.sqrt(re1*re1+im1*im1) * np.sqrt(re2*re2+im2*im2)
-            sum_m1 += re1*re1+im1*im1
-            sum_m2 += re2*re2+im2*im2
-
-        array_coh[i]=sum_z/np.sqrt(sum_m1)/np.sqrt(sum_m2)
-        # if(array_coh[i] > 1):
-        #     array_coh[i] = 1
-    
-    '''coh_stat: 统计相干性 纵轴单位是百分比'''
-    coh_stat = np.zeros(100)
-    for c in array_coh:
-        k = int(c*100)
-        if k<0:
-            k=0
-        if k >=100:
-            k=99
-        coh_stat[k] = coh_stat[k] + 1
-    coh_stat = coh_stat / np.size(array_coh,0)
-    return array_coh, coh_stat  
-
-'''thinkbook'''
-path_mas = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\master.rslc.vrt"
-path_sla = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\slave.rslc.vrt"
-'''legion'''
-# path_mas = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\master.rslc.vrt"
-# path_sla = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\slave.rslc.vrt"
 gdal.UseExceptions()
 
 '''打开栅格数据'''
@@ -72,9 +15,9 @@ except RuntimeError as e:
     print( 'Unable to open %s'% path_mas)
     sys.exit(1)
 
-cols = ds_mas.RasterXSize#图像长度
-rows = (ds_mas.RasterYSize)#图像宽度
-data_mas = ds_mas.ReadAsArray(0, 0, cols, rows)#转为numpy格式
+cols = ds_mas.RasterXSize #图像长度
+rows = ds_mas.RasterYSize #图像宽度
+data_mas = ds_mas.ReadAsArray(0, 0, cols, rows) #转为numpy格式
 
 rb: gdal.Band= ds_mas.GetRasterBand(1)
 datatype = rb.DataType
@@ -100,17 +43,17 @@ print('''dataset.info:
 print_array_info(data_mas,'data_mas')
 print_array_info(data_sla,'data_sla')
 
-xcol = np.linspace(0,cols,cols)
-# xcol = np.linspace(0,rows,rows)
-
+xcol = np.linspace(0,rows,rows)
 xcol_shift = xcol - np.size(xcol,0)/2
 
-'''距离向取一行'''
-sp_mas = data_mas[int(rows/2)]
-sp_sla = data_sla[int(rows/2)]
 '''方位向去取一列'''
-# sp_mas = data_mas[:,int(cols/2)].T
-# sp_sla = data_sla[:,int(cols/2)].T
+sp_mas = data_mas[:,int(cols/2)].T
+sp_sla = data_sla[:,int(cols/2)].T
+
+for i in range(xcol.size):
+    if np.isnan(sp_sla[i]):
+        sp_sla[i] = 0.+0.j
+
 
 # print(sp_sla[0])
 # print(sp_sla[0].conjugate())
@@ -166,6 +109,3 @@ plt.plot(xcol_shift,np.abs(fft_sla_shift),linestyle='-',label='fft_sla_shift')
 
 plt.legend()
 plt.show()
-
-
-

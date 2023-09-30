@@ -1,6 +1,16 @@
-# 在path文件夹地址下, 逐个打开每个文件, 搜索关键词keyword
+import ctypes
 import os
-
+#获取计算机名
+def getComputerName():
+    pcName = ctypes.c_char_p(''.encode('utf-8'))
+    pcSize = 16
+    pcName = ctypes.cast(pcName, ctypes.c_char_p)
+    try:
+        ctypes.windll.kernel32.GetComputerNameA(pcName, ctypes.byref(ctypes.c_int(pcSize)))
+    except Exception:
+        print("Sth wrong in getname!")
+    print(pcName.value.decode('utf-8'))
+    return pcName.value.decode('utf-8')
 
 def search_files(path, keyword):
     """
@@ -20,3 +30,4 @@ def search_files(path, keyword):
             except:
                 print("open failed:" + file_path)
                 pass
+      
