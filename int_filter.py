@@ -46,5 +46,8 @@ def hamming_wgt_rg(fr, dfr, br, ms, wgt):
     k = -1
     if ms == "sla":
         k = 1
-    r = rect((fr - k/2*np.abs(dfr))/(br-np.abs(dfr)))
-    return rect(fr/br) / (wgt + (1-wgt)* np.cos(2*np.pi * fr / fs))
+    b = (fr - k/2*np.abs(dfr))/(br-np.abs(dfr))
+    return (wgt + (1-wgt)* np.cos(2*np.pi* b))*rect(b)
+
+def filter_slant_range(fr, fs, dfr, br, ms, wgt):
+    return hamming_wgt_inv_rg(fr, fs, br, wgt) * hamming_wgt_rg(fr, dfr, br, ms, wgt)
