@@ -46,6 +46,7 @@ print_array_info(data_sla,'data_sla')
 xcol = np.linspace(0,rows,rows)
 xcol_shift = xcol - np.size(xcol,0)/2
 
+# TODO: 方位向取128条方位线FFT变换后的均值
 '''方位向去取一列'''
 sp_mas = data_mas[:,int(cols/2)].T
 sp_sla = data_sla[:,int(cols/2)].T

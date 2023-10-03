@@ -6,23 +6,6 @@ def rect(x):
         return 1
     return 0
 
-def azi_W(fa, fdi, prf, dop, bw, wgt = 0.15):
-    """
-    方位向滤波
-    :param fa: 频率, 可变量
-    :param fdi: 影像多普勒中心频率
-    :param prf: 脉冲重复频率, 也是方位向采用频率
-    :param dop: 多普勒带宽
-    :param bw: 方位向带宽
-    :param wgt: 加权系数
-    """
-    return (wgt + (1-wgt)*np.cos(2 * np.pi * (fa - fdi)/prf)) * (np.sinc((fa - dop)/prf))^2 * rect((fa-fdi)/bw)
-
-def azi_filter(fa, fd1, fd2, prf, dop, bw, wgt = 0.15):
-    
-    # wgt + (1-wgt)*np.cos(2 * math.pi * (fa - fd))
-    pass
-
 def hamming_wgt_inv_rg(fr, fs, br, wgt):
     """
     距离向的反hamming加权函数
@@ -51,3 +34,30 @@ def hamming_wgt_rg(fr, dfr, br, ms, wgt):
 
 def filter_slant_range(fr, fs, dfr, br, ms, wgt):
     return hamming_wgt_inv_rg(fr, fs, br, wgt) * hamming_wgt_rg(fr, dfr, br, ms, wgt)
+
+
+def wgt_azi(fa, fdi, prf, fdop, bw, wgt):
+    """
+    方位向滤波
+    :param fa: 频率, 可变量
+    :param fdi: 影像多普勒中心频率
+    :param prf: 脉冲重复频率, 也是方位向采用频率
+    :param dop: 多普勒带宽
+    :param bw: 方位向带宽
+    :param wgt: 加权系数
+    """
+    fa_fdi = fa - fdi
+    return (wgt + (1-wgt)*np.cos(2 * np.pi * fa_fdi/prf)) * (np.sinc(fa_fdi/fdop))^2 * rect(fa_fdi/bw)
+
+def pai(fa, Bac):
+    if np.abs(fa) <=  np.abs(Bac):
+        return 1
+    return 0
+
+def filter_azimuth(fa, fd1, fd2, prf, dop, bw, ms, wgt):
+    delta_fd = fd1-fd2
+    Bac = bw - np.abs(delta_fd)
+    if ms == "sla":
+        return np.sqrt(wgt_azi(fa-fd2)/wgt_azi(fa-fd1)) * pai(fa,Bac)
+    else:
+        return np.sqrt(wgt_azi(fa-fd1)/wgt_azi(fa-fd2)) * pai(fa,Bac)

@@ -43,13 +43,17 @@ print('''dataset.info:
 print_array_info(data_mas,'data_mas')
 print_array_info(data_sla,'data_sla')
 
+
+# TODO: fft变幻后的横轴坐标需要修改, 
+# 原横坐标应为时长, 1/fadc = 单像素采样时间间隔, 1/fadc*col = 一行数据的总耗时
+# 同时计算出对应的xcol_freq
 xcol = np.linspace(0,cols,cols)
 xcol_shift = xcol - np.size(xcol,0)/2
 
+# TODO: 距离向分别取12条距离向谱线的均值 
 '''距离向取一行'''
 sp_mas = data_mas[int(rows/2)]
 sp_sla = data_sla[int(rows/2)]
-
 
 for i in range(xcol.size):
     if np.isnan(sp_sla[i]):
