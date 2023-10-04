@@ -1,12 +1,30 @@
-from int_test_base import print_array_info,coh_map,path_mas,path_sla
+from int_test_base import print_array_info,coh_map,path_mas,path_sla, path_mas_json, path_sla_json
 import osgeo.gdal as gdal
 import sys
 import numpy as np
+import json
 import matplotlib.pyplot as plt
-from scipy.fftpack import fft, fftshift, ifft
+from scipy.fftpack import fft, fftshift, ifft,fftfreq
 
 print(gdal.__version__)
 gdal.UseExceptions()
+
+'''打开json文件读取频率和带宽数据'''
+# with open(path_mas_json) as f:
+#     mas_json = json.load(f)
+
+# with open(path_sla_json) as f:
+#     sla_json = json.load(f)
+
+# mas_rg_bw = mas_json["parameters"]["rg_bandwidth"]    
+# mas_rg_freq = mas_json["parameters"]["fadc"] 
+# sla_rg_bw = sla_json["parameters"]["rg_bandwidth"]    
+# sla_rg_freq = sla_json["parameters"]["fadc"]
+
+mas_rg_bw = 80000000.000000    
+mas_rg_freq = 90000000.000000
+sla_rg_bw = 80000000.000000    
+sla_rg_freq = 90000000.000000
 
 '''打开栅格数据'''
 try:
@@ -47,6 +65,12 @@ print_array_info(data_sla,'data_sla')
 # TODO: fft变幻后的横轴坐标需要修改, 
 # 原横坐标应为时长, 1/fadc = 单像素采样时间间隔, 1/fadc*col = 一行数据的总耗时
 # 同时计算出对应的xcol_freq
+
+'''new xcol'''
+xcol = range(0,cols * mas_rg_freq, mas_rg_freq)
+xcol_freq = fftfreq(cols,mas_rg_freq)
+xcol_shift = fftshift(xcol_freq)
+
 xcol = np.linspace(0,cols,cols)
 xcol_shift = xcol - np.size(xcol,0)/2
 

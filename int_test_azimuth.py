@@ -1,12 +1,31 @@
-from int_test_base import print_array_info,coh_map,path_mas,path_sla
+from int_test_base import print_array_info,coh_map,path_mas,path_sla, path_mas_json, path_sla_json
 import osgeo.gdal as gdal
 import sys
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.fftpack import fft, fftshift, ifft
+from scipy.fftpack import fft, fftshift, ifft, fftfreq
+import json
 
 print(gdal.__version__)
 gdal.UseExceptions()
+
+'''打开json文件读取频率和带宽数据'''
+with open(path_mas_json) as f:
+    mas_json = json.load(f)
+
+with open(path_sla_json) as f:
+    sla_json = json.load(f)
+
+mas_azi_bw = mas_json["parameters"]["az_bandwidth"]    
+mas_azi_freq = mas_json["parameters"]["prf"]
+
+sla_azi_bw = sla_json["parameters"]["az_bandwidth"]    
+sla_azi_freq = sla_json["parameters"]["prf"] 
+
+mas_azi_bw = 857.331247    
+mas_azi_freq = 1498.501465
+sla_azi_bw = 866.623354    
+sla_azi_freq = 1495.662598
 
 '''打开栅格数据'''
 try:
@@ -42,6 +61,11 @@ print('''dataset.info:
 
 print_array_info(data_mas,'data_mas')
 print_array_info(data_sla,'data_sla')
+
+'''new xcol'''
+xcol = range(0,cols * mas_azi_freq, mas_azi_freq)
+xcol_freq = fftfreq(cols,mas_azi_freq)
+xcol_shift = fftshift(xcol_freq)
 
 xcol = np.linspace(0,rows,rows)
 xcol_shift = xcol - np.size(xcol,0)/2

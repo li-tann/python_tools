@@ -1,5 +1,6 @@
 import osgeo.gdal as gdal
 import sys
+import json
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.fftpack import fft, fftshift, ifft
@@ -59,7 +60,9 @@ def coh_map(array_a, array_b):
 
 if getComputerName() == "LITANR7000P":
     path_mas = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\master.rslc.vrt"
+    path_mas_json = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\master.rslc.json"
     path_sla = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\slave.rslc.vrt"
+    path_sla_json = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\\DInSAR\\_slc\\sarbox\\registration\\slave.rslc.json"
 
     '''配准前的主辅影像'''
     # path_mas = "e:\\_REMOTE_SENSING_DATA\\LSAR_TEST\DInSAR\\_slc\\sarbox\\slc\\LT1A_20230321.slc.vrt"
@@ -68,7 +71,9 @@ if getComputerName() == "LITANR7000P":
 else:
     '''DESKTOP-4U7COK0'''
     path_mas = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\master.rslc.vrt"
+    path_mas_json = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\master.rslc.json"
     path_sla = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\slave.rslc.vrt"
+    path_sla_json = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\slave.rslc.json"
 
 # '''thinkbook'''
 # # path_mas = "d:\\1_Data\\L-SAR_TEST\\dinsar_mono_cut2\\_slc\sarbox\\registration\\master.rslc.vrt"
