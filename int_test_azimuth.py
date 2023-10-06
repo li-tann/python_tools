@@ -16,11 +16,11 @@ with open(path_mas_json) as f:
 with open(path_sla_json) as f:
     sla_json = json.load(f)
 
-mas_azi_bw = mas_json["parameters"]["az_bandwidth"]    
-mas_azi_freq = mas_json["parameters"]["prf"]
+# mas_azi_bw = mas_json["parameters"]["az_bandwidth"]    
+# mas_azi_freq = mas_json["parameters"]["prf"]
 
-sla_azi_bw = sla_json["parameters"]["az_bandwidth"]    
-sla_azi_freq = sla_json["parameters"]["prf"] 
+# sla_azi_bw = sla_json["parameters"]["az_bandwidth"]    
+# sla_azi_freq = sla_json["parameters"]["prf"] 
 
 mas_azi_bw = 857.331247    
 mas_azi_freq = 1498.501465
@@ -63,12 +63,16 @@ print_array_info(data_mas,'data_mas')
 print_array_info(data_sla,'data_sla')
 
 '''new xcol'''
-xcol = range(0,cols * mas_azi_freq, mas_azi_freq)
-xcol_freq = fftfreq(cols,mas_azi_freq)
+xcol = np.linspace(0,rows * mas_azi_freq, rows)
+xcol_freq = fftfreq(rows,d=mas_azi_freq)
 xcol_shift = fftshift(xcol_freq)
 
-xcol = np.linspace(0,rows,rows)
-xcol_shift = xcol - np.size(xcol,0)/2
+xcol_sla = np.linspace(0,rows * sla_azi_freq, rows)
+xcol_sla_freq = fftfreq(rows,d=sla_azi_freq)
+xcol_sla_shift = fftshift(xcol_sla_freq)
+
+# xcol = np.linspace(0,rows,rows)
+# xcol_shift = xcol - np.size(xcol,0)/2
 
 # TODO: 方位向取128条方位线FFT变换后的均值
 '''方位向去取一列'''
@@ -112,7 +116,7 @@ plt.figure(1)
 # plt.plot(xcol,abs(fft_sla), linestyle='-',label='fft_sla')
 
 plt.plot(xcol_shift,np.abs(fft_mas_shift),linestyle='-',label='fft_mas_shift')
-plt.plot(xcol_shift,np.abs(fft_sla_shift),linestyle='-',label='fft_sla_shift')
+plt.plot(xcol_sla_shift,np.abs(fft_sla_shift),linestyle='-',label='fft_sla_shift')
 
 # kaiser_win = np.kaiser(50,2.12)
 # A = fft(kaiser_win,2048)/25.5

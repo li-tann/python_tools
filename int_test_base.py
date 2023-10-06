@@ -49,6 +49,8 @@ def coh_map(array_a, array_b):
     '''coh_stat: 统计相干性 纵轴单位是百分比'''
     coh_stat = np.zeros(100)
     for c in array_coh:
+        if np.isnan(c):
+            continue
         k = int(c*100)
         if k<0:
             k=0

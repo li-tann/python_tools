@@ -21,10 +21,11 @@ gdal.UseExceptions()
 # sla_rg_bw = sla_json["parameters"]["rg_bandwidth"]    
 # sla_rg_freq = sla_json["parameters"]["fadc"]
 
-mas_rg_bw = 80000000.000000    
-mas_rg_freq = 90000000.000000
-sla_rg_bw = 80000000.000000    
-sla_rg_freq = 90000000.000000
+'''unit: MHz'''
+mas_rg_bw = 80.000000    
+mas_rg_freq = 90.000000
+sla_rg_bw = 80.000000    
+sla_rg_freq = 90.000000
 
 '''打开栅格数据'''
 try:
@@ -67,12 +68,16 @@ print_array_info(data_sla,'data_sla')
 # 同时计算出对应的xcol_freq
 
 '''new xcol'''
-xcol = range(0,cols * mas_rg_freq, mas_rg_freq)
-xcol_freq = fftfreq(cols,mas_rg_freq)
+xcol = np.linspace(0,cols * mas_rg_freq, cols)
+xcol_freq = fftfreq(cols,d = mas_rg_freq)
 xcol_shift = fftshift(xcol_freq)
 
-xcol = np.linspace(0,cols,cols)
-xcol_shift = xcol - np.size(xcol,0)/2
+xcol_sla = np.linspace(0,cols * sla_rg_freq, cols)
+xcol_sla_freq = fftfreq(cols,d = sla_rg_freq)
+xcol_sla_shift = fftshift(xcol_sla_freq)
+
+# xcol = np.linspace(0,cols,cols)
+# xcol_shift = xcol - np.size(xcol,0)/2
 
 # TODO: 距离向分别取12条距离向谱线的均值 
 '''距离向取一行'''

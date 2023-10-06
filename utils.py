@@ -1,5 +1,6 @@
 import ctypes
 import os
+
 #获取计算机名
 def getComputerName():
     pcName = ctypes.c_char_p(''.encode('utf-8'))
