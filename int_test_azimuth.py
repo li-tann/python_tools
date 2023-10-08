@@ -64,11 +64,11 @@ print_array_info(data_sla,'data_sla')
 
 '''new xcol'''
 xcol = np.linspace(0,rows * mas_azi_freq, rows)
-xcol_freq = fftfreq(rows,d=mas_azi_freq)
+xcol_freq = fftfreq(rows,d= 1/mas_azi_freq)
 xcol_shift = fftshift(xcol_freq)
 
 xcol_sla = np.linspace(0,rows * sla_azi_freq, rows)
-xcol_sla_freq = fftfreq(rows,d=sla_azi_freq)
+xcol_sla_freq = fftfreq(rows,d= 1/sla_azi_freq)
 xcol_sla_shift = fftshift(xcol_sla_freq)
 
 # xcol = np.linspace(0,rows,rows)
@@ -117,6 +117,8 @@ plt.figure(1)
 
 plt.plot(xcol_shift,np.abs(fft_mas_shift),linestyle='-',label='fft_mas_shift')
 plt.plot(xcol_sla_shift,np.abs(fft_sla_shift),linestyle='-',label='fft_sla_shift')
+plt.xlabel('azimuth frequency / Hz')
+plt.ylabel('amplitude')
 
 # kaiser_win = np.kaiser(50,2.12)
 # A = fft(kaiser_win,2048)/25.5
