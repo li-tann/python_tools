@@ -62,11 +62,11 @@ with open("last_gacos_data_date.txt", "r+", encoding='utf-8') as f:
     url='.../{}.tar.gz'.format(data)
     print('url:',url)
     current_day=datetime.datetime.strptime(data,"%Y%m%d")
-    print(current_day)
+    print("current_day: ", current_day)
     next_day=(current_day+datetime.timedelta(days=1)).strftime('%Y%m%d')
-    print(next_day)
+    print("next_day: ", next_day)
     f.close()
-    local_filepath="E:/_REMOTE_SENSING_DATA/{}.tar.gz".format(data)
+    local_filepath=".../{}.tar.gz".format(data)
     print(local_filepath)
 
 if(url_exists(url)):
@@ -75,12 +75,13 @@ if(url_exists(url)):
     # download...
     # subprocess.run("d:/msys/usr/bin/wget.exe -c {}".format(url))
 
-    download_file(url,local_filepath)
-    
-    print('downloaded, update txt from current({}) to  next({})'.format(data,next_day))
-    with open("last_gacos_data_date.txt", "w", encoding='utf-8') as f:
-        f.write(next_day)
-        f.close()
+    if download_file(url,local_filepath):
+        print('downloaded, update txt from current({}) to  next({})'.format(data,next_day))
+        with open("last_gacos_data_date.txt", "w", encoding='utf-8') as f:
+            f.write(next_day)
+            f.close()
+    else:
+        print("download_file failed.")
 else:
     print('url isn\'t exist')
 
