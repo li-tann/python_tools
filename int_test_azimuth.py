@@ -117,7 +117,7 @@ plt.figure(1)
 
 plt.plot(xcol_shift,np.abs(fft_mas_shift),linestyle='-',label='fft_mas_shift')
 plt.plot(xcol_sla_shift,np.abs(fft_sla_shift),linestyle='-',label='fft_sla_shift')
-plt.xlabel('azimuth frequency / Hz')
+plt.xlabel('azimuth frequency / MHz')
 plt.ylabel('amplitude')
 
 # kaiser_win = np.kaiser(50,2.12)
